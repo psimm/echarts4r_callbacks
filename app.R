@@ -8,7 +8,7 @@ library(DT)
 data <- flights %>% 
   mutate(date = as.Date(time_hour)) %>% 
   filter(date <= as.Date('2013-01-31')) %>% 
-  select(date, carrier, tailnum, origin, dest) %>% 
+  select(date, time_hour, carrier, tailnum, origin, dest) %>% 
   arrange_all()
 
 ui <- fluidPage(
@@ -90,6 +90,7 @@ server <- function(input, output, session) {
     if (!is.null(filter_date())) {
       data <- data %>% filter(date == filter_date())
     }
+    data <- data %>% select(time_hour, carrier, tailnum, origin, dest) 
     datatable(
       data, 
       selection = 'none', 
